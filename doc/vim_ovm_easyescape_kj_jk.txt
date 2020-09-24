@@ -1,0 +1,26 @@
+*vim_ovm_easyescape_kj_jk.txt*	For Vim version 7.4.	Last change: 2020 Sep 24
+
+One Person's Vim Escape-From-Insert-Mode Mappings~
+
+Vim Power User's Right-Handed Escapes	*vim-ovm-easyescape-kj-jk*
+
+1. About This Plugin			|vim-ovm-eekjjk-about|
+1. Setup Requirements			|vim-ovm-eekjjk-setup|
+
+==============================================================================
+1. About This Plugin			*vim-ovm-eekjjk-about*
+
+This plugin makes it easy to escape from Insert mode to Normal mode
+simply by typing `jk` or `kj`.
+
+Project page: https://github.com/landonb/vim-ovm-easyescape-kj-jk
+
+==============================================================================
+2. Setup Requirements			*vim-ovm-eekjjk-setup*
+
+This plugin wires mappings to commands provided by another plugin,
+`vim-easyescape`, which you'll want to install.
+
+Project page: https://github.com/zhou13/vim-easyescape
+
+ vim:tw=78:ts=8:ft=help:norl:
