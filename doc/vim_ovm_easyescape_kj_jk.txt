@@ -1,6 +1,6 @@
 *vim_ovm_easyescape_kj_jk.txt*	For Vim version 7.4.	Last change: 2020 Sep 24
 
-One Person's Vim Escape-From-Insert-Mode Mappings~
+One Vimmer's Maps — Escape-From-Insert-Mode Mappings~
 
 Vim Power User's Right-Handed Escapes	*vim-ovm-easyescape-kj-jk*
 
