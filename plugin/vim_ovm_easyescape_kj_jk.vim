@@ -30,6 +30,7 @@ endfunction
 function! s:setup_bindings_easyescape_kj_jk()
   let g:easyescape_chars = { "j": 1, "k": 1 }
   let g:easyescape_timeout = 100
+
   cnoremap kj <ESC>
   cnoremap jk <ESC>
 endfunction
