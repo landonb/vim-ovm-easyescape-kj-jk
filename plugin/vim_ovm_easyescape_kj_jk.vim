@@ -28,6 +28,8 @@ endfunction
 " Says:
 "   Usage: Configuration 1: map of jk and kj (recommended) >>
 function! s:setup_bindings_easyescape_kj_jk()
+  call <SID>print_alert_if_python3_missing()
+
   let g:easyescape_chars = { "j": 1, "k": 1 }
   let g:easyescape_timeout = 100
 
@@ -38,6 +40,25 @@ endfunction
 function! s:reset_bindings_easyescape_kj_jk()
   call <SID>clear_bindings_easyescape_kj_jk()
   call <SID>setup_bindings_easyescape_kj_jk()
+endfunction
+
+" The plugin prints an error after we set timeout = 100 if Py3 absent:
+"   Python3 is required when g:easyescape_timeout < 2000
+" ~/.vim/pack/zhou13/start/vim-easyescape/plugin/easyescape.vim
+function! s:print_alert_if_python3_missing()
+  if has('python3')
+
+    return
+  endif
+
+  echom "ALERT: Missing Python v3: Cannot set g:easyescape_timeout = 100"
+  if has('macunix')
+    echom "- USAGE: On macOS, ensure MacVim installed and its vim/vi are on PATH before Apple's"
+  else
+    echom "- USAGE: On Linux, build Vim with Python3 support"
+    echom "  CXREF: Here's how the DepoXy project builds Vim:"
+    echom "    https://github.com/DepoXy/depoxy/blob/1.4.0/home/.vim/_mrconfig#L53-L108"
+  endif
 endfunction
 
 " ########################################################################
