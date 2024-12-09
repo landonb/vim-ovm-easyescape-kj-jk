@@ -1,69 +1,124 @@
-" Escape from Insert Mode By Typing ``jk`` or ``kj``
+" vim:tw=0:ts=2:sw=2:et:norl
 " Author: Landon Bouma <https://tallybark.com/>
-" Online: https://github.com/landonb/vim-ovm-easyescape-kj-jk
+" Project: https://github.com/landonb/vim-ovm-easyescape-kj-jk
 " License: https://creativecommons.org/publicdomain/zero/1.0/
-"  vim:tw=0:ts=2:sw=2:et:norl:ft=vim
-" Copyright © 2020 Landon Bouma.
+" Summary: Escape from Insert Mode By Typing `kj` or `jk`
+" Requires: https://github.com/escape-vim/vim-async-mapper
+" Copyright © 2020, 2024 Landon Bouma.
 
-" ########################################################################
+" -------------------------------------------------------------------
 
-" DEV: Uncomment the 'unlet', then <F9> to reload this file.
-"       https://github.com/landonb/vim-source-reloader
-"  silent! unlet g:loaded_ovm_easyescape_kj_jk
+" USAGE: After editing this plugin, you can reload it on the fly with
+"        https://github.com/landonb/vim-source-reloader#↩️
+" - Uncomment this `unlet` (or disable the `finish`) and hit <F9>.
+"
+" silent! unlet g:loaded_vim_ovm_easyescape_kj_jk_plugin
 
-if exists("g:loaded_ovm_easyescape_kj_jk") || &cp
+if exists("g:loaded_vim_ovm_easyescape_kj_jk_plugin") || &cp
   finish
 endif
-let g:loaded_ovm_easyescape_kj_jk = 1
+let g:loaded_vim_ovm_easyescape_kj_jk_plugin = 1
 
-" ########################################################################
+" -------------------------------------------------------------------
 
-function! s:clear_bindings_easyescape_kj_jk()
+" Wire 'kj' and 'jk' magic insert mode maps using vim-async-mapper:
+"   https://github.com/embrace-vim/vim-async-mapper/
+"
+" Which is a fork/was inspired by the venerable vim-easyescape:
+"   https://github.com/zhou13/vim-easyescape/
+"
+" When typed, either sequenbce exits insert mode.
+"
+" Note vim-async-mapper avoids editing buffer unnecessarily after
+" the sequence is typed and processed. (Whereas vim-easyescape uses
+" <BS> to remove typed sequence, which leaves buffer edited, thus
+" requires user to undo, save, or don't-save.)
+"
+" Here we also add command mode maps for same key sequences (which
+" is trivial and doesn't require much magic to work).
+
+" -------------------------------------------------------------------
+
+function! s:unmap_bindings_command_mode_kj_jk()
   silent! cunmap kj
   silent! cunmap jk
 endfunction
 
-" From:
-"   https://github.com/zhou13/vim-easyescape/
-" Says:
-"   Usage: Configuration 1: map of jk and kj (recommended) >>
-function! s:setup_bindings_easyescape_kj_jk()
-  call <SID>print_alert_if_python3_missing()
-
-  let g:easyescape_chars = { "j": 1, "k": 1 }
-  let g:easyescape_timeout = 100
-
+function! s:remap_bindings_command_mode_kj_jk()
   cnoremap kj <ESC>
   cnoremap jk <ESC>
 endfunction
 
-function! s:reset_bindings_easyescape_kj_jk()
-  call <SID>clear_bindings_easyescape_kj_jk()
-  call <SID>setup_bindings_easyescape_kj_jk()
+function! s:setup_bindings_command_mode_kj_jk()
+  call s:unmap_bindings_command_mode_kj_jk()
+  call s:remap_bindings_command_mode_kj_jk()
 endfunction
 
-" The plugin prints an error after we set timeout = 100 if Py3 absent:
-"   Python3 is required when g:easyescape_timeout < 2000
-" ~/.vim/pack/zhou13/start/vim-easyescape/plugin/easyescape.vim
-function! s:print_alert_if_python3_missing()
-  if has('python3')
+" -------------------------------------------------------------------
+
+" HSTRY/2024-12-08: The vim-easyescape approach:
+"
+"   function! s:configure_plugin_vim_easyescape()
+"     let g:easyescape_chars = { 'j': 1, 'k': 1 }
+"     let g:easyescape_timeout = 100
+"   endfunction
+
+function! s:setup_bindings_insert_mode_kj_jk()
+  call g:embrace#amapper#register_insert_mode_map("kj", "\<ESC>")
+  call g:embrace#amapper#register_insert_mode_map("jk", "\<ESC>")
+endfunction
+
+" -------------------------------------------------------------------
+
+" These bindings make 'jk'/'kj' toggleable, so you can bop between
+" normal mode and insert mode.
+" - Not *super* helpful, as 'i' is right above 'j' and 'k' on an
+"   English keyboard, which enter insert mode.
+"   - But parity can also be fun, and it shows off the flexibility
+"     of vim-async-mapper.
+" - Note that j/k is down/up, and since plugin does not wait for sequence
+"   to be input, we will 'undo' previous press once seq. detected.
+"   - E.g., if user presses 'kj', 'k' moves cursor up one line, then the
+"   plugin captures 'j' and runs the map_command, which we set to 'ji' so
+"   that cursor is moved down one line, then mode changes to insert mode.
+"
+" BWARE: The vim-async-mapper does not detect when *other* characters
+" are typed within the sequence, e.g., if you type `juk` (down, undo,
+" up) within the timeout (g:vim_async_mapper_timeout) for each press,
+" the plugin will detect the `jk` sequence!
+function! s:setup_bindings_normal_mode_kj_jk()
+  if exists("g:vim_ovm_easyescape_kj_jk_add_normal_mode_maps")
+      \ && !g:vim_ovm_easyescape_kj_jk_add_normal_mode_maps
 
     return
   endif
 
-  echom "ALERT: Missing Python v3: Cannot set g:easyescape_timeout = 100"
-  if has('macunix')
-    echom "- USAGE: On macOS, ensure MacVim installed and its vim/vi are on PATH before Apple's"
-  else
-    echom "- USAGE: On Linux, build Vim with Python3 support"
-    echom "  CXREF: Here's how the DepoXy project builds Vim:"
-    echom "    https://github.com/DepoXy/depoxy/blob/1.4.0/home/.vim/_mrconfig#L53-L108"
-  endif
+  call g:embrace#amapper#register_normal_mode_map("kj", "ji")
+  call g:embrace#amapper#register_normal_mode_map("jk", "ki")
 endfunction
 
-" ########################################################################
+" -------------------------------------------------------------------
 
-call <SID>reset_bindings_easyescape_kj_jk()
+function! s:setup_bindings_all_modes_kj_jk()
+  " The plugin alerts and hints at fixes if Python 3 is not installed.
+  if !exists("g:vim_async_mapper_timeout")
 
-" ########################################################################
+    let g:vim_async_mapper_timeout = 100
+  endif
+
+  try
+    call s:setup_bindings_command_mode_kj_jk()
+    call s:setup_bindings_insert_mode_kj_jk()
+    call s:setup_bindings_normal_mode_kj_jk()
+	catch /^Vim\%((\a\+)\)\=:E117:/
+    " E.g., E117: Unknown function: foo#bar#baz
+
+    echom "ALERT: Please install embrace-vim/vim-async-mapper to enable "
+      \ .. "`kj`/`jk` insert and normal mode maps"
+  endtry
+endfunction
+
+call s:setup_bindings_all_modes_kj_jk()
+
+" -------------------------------------------------------------------
 
