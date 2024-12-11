@@ -3,7 +3,7 @@
 " Project: https://github.com/landonb/vim-ovm-easyescape-kj-jk
 " License: https://creativecommons.org/publicdomain/zero/1.0/
 " Summary: Escape from Insert Mode By Typing `kj` or `jk`
-" Requires: https://github.com/escape-vim/vim-async-mapper
+" Requires: https://github.com/escape-vim/vim-async-map
 " Copyright © 2020, 2024 Landon Bouma.
 
 " -------------------------------------------------------------------
@@ -21,15 +21,15 @@ let g:loaded_vim_ovm_easyescape_kj_jk_plugin = 1
 
 " -------------------------------------------------------------------
 
-" Wire 'kj' and 'jk' magic insert mode maps using vim-async-mapper:
-"   https://github.com/embrace-vim/vim-async-mapper/
+" Wire 'kj' and 'jk' magic insert mode maps using vim-async-map:
+"   https://github.com/embrace-vim/vim-async-map/
 "
 " Which is a fork/was inspired by the venerable vim-easyescape:
 "   https://github.com/zhou13/vim-easyescape/
 "
 " When typed, either sequenbce exits insert mode.
 "
-" Note vim-async-mapper avoids editing buffer unnecessarily after
+" Note vim-async-map avoids editing buffer unnecessarily after
 " the sequence is typed and processed. (Whereas vim-easyescape uses
 " <BS> to remove typed sequence, which leaves buffer edited, thus
 " requires user to undo, save, or don't-save.)
@@ -64,8 +64,8 @@ endfunction
 "   endfunction
 
 function! s:setup_bindings_insert_mode_kj_jk()
-  call g:embrace#amapper#register_insert_mode_map("kj", "\<ESC>")
-  call g:embrace#amapper#register_insert_mode_map("jk", "\<ESC>")
+  call g:embrace#async_map#register_insert_mode_map("kj", "\<ESC>")
+  call g:embrace#async_map#register_insert_mode_map("jk", "\<ESC>")
 endfunction
 
 " -------------------------------------------------------------------
@@ -75,14 +75,14 @@ endfunction
 " - Not *super* helpful, as 'i' is right above 'j' and 'k' on an
 "   English keyboard, which enter insert mode.
 "   - But parity can also be fun, and it shows off the flexibility
-"     of vim-async-mapper.
+"     of vim-async-map.
 " - Note that j/k is down/up, and since plugin does not wait for sequence
 "   to be input, we will 'undo' previous press once seq. detected.
 "   - E.g., if user presses 'kj', 'k' moves cursor up one line, then the
 "   plugin captures 'j' and runs the map_command, which we set to 'ji' so
 "   that cursor is moved down one line, then mode changes to insert mode.
 "
-" BWARE: The vim-async-mapper does not detect when *other* characters
+" BWARE: The vim-async-map does not detect when *other* characters
 " are typed within the sequence, e.g., if you type `juk` (down, undo,
 " up) within the timeout (g:vim_async_mapper_timeout) for each press,
 " the plugin will detect the `jk` sequence!
@@ -93,8 +93,8 @@ function! s:setup_bindings_normal_mode_kj_jk()
     return
   endif
 
-  call g:embrace#amapper#register_normal_mode_map("kj", "ji")
-  call g:embrace#amapper#register_normal_mode_map("jk", "ki")
+  call g:embrace#async_map#register_normal_mode_map("kj", "ji")
+  call g:embrace#async_map#register_normal_mode_map("jk", "ki")
 endfunction
 
 " -------------------------------------------------------------------
@@ -113,7 +113,7 @@ function! s:setup_bindings_all_modes_kj_jk()
 	catch /^Vim\%((\a\+)\)\=:E117:/
     " E.g., E117: Unknown function: foo#bar#baz
 
-    echom "ALERT: Please install embrace-vim/vim-async-mapper to enable "
+    echom "ALERT: Please install embrace-vim/vim-async-map to enable "
       \ .. "`kj`/`jk` insert and normal mode maps"
   endtry
 endfunction
