@@ -109,8 +109,16 @@ function! s:setup_bindings_all_modes_kj_jk()
     let g:vim_async_mapper_timeout = 100
   endif
 
+  " DUNNO: These maps run the command on `kj`/`jk` rather than cancel
+  " it (which is what <Esc> does). They also temporarily scramble the
+  " surrounding few characters until the timeout fixes it. Kinda weird.
+  " Also don't remember why I ever added this binding, or if it ever
+  " helped in any way. (Also who starts command mode and then wants
+  " out with quickly? I'll just hit <Esc> to cancel.)
+  "
+  "  call s:setup_bindings_command_mode_kj_jk()
+
   try
-    call s:setup_bindings_command_mode_kj_jk()
     call s:setup_bindings_insert_mode_kj_jk()
     call s:setup_bindings_normal_mode_kj_jk()
 	catch /^Vim\%((\a\+)\)\=:E117:/
