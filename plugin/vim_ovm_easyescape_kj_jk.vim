@@ -63,6 +63,9 @@ endfunction
 "     let g:easyescape_timeout = 100
 "   endfunction
 
+" CXREF/2024-12-14:
+" ~/.vim/pack/embrace-vim/start/vim-async-map/autoload/embrace/async_map.vim
+
 function! s:setup_bindings_insert_mode_kj_jk()
   call g:embrace#async_map#register_insert_mode_map("kj", "\<ESC>")
   call g:embrace#async_map#register_insert_mode_map("jk", "\<ESC>")
