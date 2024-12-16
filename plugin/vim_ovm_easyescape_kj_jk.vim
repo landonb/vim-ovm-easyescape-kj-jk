@@ -67,8 +67,8 @@ endfunction
 " ~/.vim/pack/embrace-vim/start/vim-async-map/autoload/embrace/async_map.vim
 
 function! s:setup_bindings_insert_mode_kj_jk()
-  call g:embrace#async_map#register_insert_mode_map("kj", "\<ESC>")
-  call g:embrace#async_map#register_insert_mode_map("jk", "\<ESC>")
+  call g:embrace#async_map#RegisterInsertModeMap("kj", "\<ESC>")
+  call g:embrace#async_map#RegisterInsertModeMap("jk", "\<ESC>")
 endfunction
 
 " -------------------------------------------------------------------
@@ -87,7 +87,7 @@ endfunction
 "
 " BWARE: The vim-async-map does not detect when *other* characters
 " are typed within the sequence, e.g., if you type `juk` (down, undo,
-" up) within the timeout (g:vim_async_mapper_timeout) for each press,
+" up) within the timeout (g:vim_async_map_timeout) for each press,
 " the plugin will detect the `jk` sequence!
 function! s:setup_bindings_normal_mode_kj_jk()
   if exists("g:vim_ovm_easyescape_kj_jk_add_normal_mode_maps")
@@ -96,17 +96,17 @@ function! s:setup_bindings_normal_mode_kj_jk()
     return
   endif
 
-  call g:embrace#async_map#register_normal_mode_map("kj", "ji")
-  call g:embrace#async_map#register_normal_mode_map("jk", "ki")
+  call g:embrace#async_map#RegisterNormalModeMap("kj", "ji")
+  call g:embrace#async_map#RegisterNormalModeMap("jk", "ki")
 endfunction
 
 " -------------------------------------------------------------------
 
 function! s:setup_bindings_all_modes_kj_jk()
   " The plugin alerts and hints at fixes if Python 3 is not installed.
-  if !exists("g:vim_async_mapper_timeout")
+  if !exists("g:vim_async_map_timeout")
 
-    let g:vim_async_mapper_timeout = 100
+    let g:vim_async_map_timeout = 100
   endif
 
   " DUNNO: These maps run the command on `kj`/`jk` rather than cancel
