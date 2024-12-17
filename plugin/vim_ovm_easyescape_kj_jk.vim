@@ -39,19 +39,19 @@ let g:loaded_vim_ovm_easyescape_kj_jk_plugin = 1
 
 " -------------------------------------------------------------------
 
-function! s:unmap_bindings_command_mode_kj_jk()
+function! s:CreateMaps_CommandMode_Delete_kj_jk()
   silent! cunmap kj
   silent! cunmap jk
 endfunction
 
-function! s:remap_bindings_command_mode_kj_jk()
+function! s:CreateMaps_CommandMode_Create_kj_jk()
   cnoremap kj <ESC>
   cnoremap jk <ESC>
 endfunction
 
-function! s:setup_bindings_command_mode_kj_jk()
-  call s:unmap_bindings_command_mode_kj_jk()
-  call s:remap_bindings_command_mode_kj_jk()
+function! s:CreateMaps_CommandMode_kj_jk()
+  call s:CreateMaps_CommandMode_Delete_kj_jk()
+  call s:CreateMaps_CommandMode_Create_kj_jk()
 endfunction
 
 " -------------------------------------------------------------------
@@ -66,7 +66,7 @@ endfunction
 " CXREF/2024-12-14:
 " ~/.vim/pack/embrace-vim/start/vim-async-map/autoload/embrace/async_map.vim
 
-function! s:setup_bindings_insert_mode_kj_jk()
+function! s:CreateMaps_InsertMode_kj_jk()
   call g:embrace#async_map#RegisterInsertModeMap("kj", "\<ESC>")
   call g:embrace#async_map#RegisterInsertModeMap("jk", "\<ESC>")
 endfunction
@@ -89,7 +89,7 @@ endfunction
 " are typed within the sequence, e.g., if you type `juk` (down, undo,
 " up) within the timeout (g:vim_async_map_timeout) for each press,
 " the plugin will detect the `jk` sequence!
-function! s:setup_bindings_normal_mode_kj_jk()
+function! s:CreateMaps_NormalMode_kj_jk()
   if exists("g:vim_ovm_easyescape_kj_jk_add_normal_mode_maps")
       \ && !g:vim_ovm_easyescape_kj_jk_add_normal_mode_maps
 
@@ -102,7 +102,7 @@ endfunction
 
 " -------------------------------------------------------------------
 
-function! s:setup_bindings_all_modes_kj_jk()
+function! s:CreateMaps_kj_jk()
   " The plugin alerts and hints at fixes if Python 3 is not installed.
   if !exists("g:vim_async_map_timeout")
 
@@ -116,11 +116,11 @@ function! s:setup_bindings_all_modes_kj_jk()
   " helped in any way. (Also who starts command mode and then wants
   " out with quickly? I'll just hit <Esc> to cancel.)
   "
-  "  call s:setup_bindings_command_mode_kj_jk()
+  "  call s:CreateMaps_CommandMode_kj_jk()
 
   try
-    call s:setup_bindings_insert_mode_kj_jk()
-    call s:setup_bindings_normal_mode_kj_jk()
+    call s:CreateMaps_InsertMode_kj_jk()
+    call s:CreateMaps_NormalMode_kj_jk()
 	catch /^Vim\%((\a\+)\)\=:E117:/
     " E.g., E117: Unknown function: foo#bar#baz
 
@@ -129,7 +129,7 @@ function! s:setup_bindings_all_modes_kj_jk()
   endtry
 endfunction
 
-call s:setup_bindings_all_modes_kj_jk()
+call s:CreateMaps_kj_jk()
 
 " -------------------------------------------------------------------
 
