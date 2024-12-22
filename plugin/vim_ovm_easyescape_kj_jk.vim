@@ -8,15 +8,18 @@
 
 " -------------------------------------------------------------------
 
-" USAGE: After editing this plugin, you can reload it on the fly with
-"        https://github.com/landonb/vim-source-reloader#↩️
-" - Uncomment this `unlet` (or disable the `finish`) and hit <F9>.
-"
-" silent! unlet g:loaded_vim_ovm_easyescape_kj_jk_plugin
+" GUARD: Press <F9> to reload this plugin (or :source it).
+" - Via: https://github.com/embrace-vim/vim-source-reloader#↩️
+
+if expand("%:p") ==# expand("<sfile>:p")
+  unlet g:loaded_vim_ovm_easyescape_kj_jk_plugin
+endif
 
 if exists("g:loaded_vim_ovm_easyescape_kj_jk_plugin") || &cp
+
   finish
 endif
+
 let g:loaded_vim_ovm_easyescape_kj_jk_plugin = 1
 
 " -------------------------------------------------------------------
