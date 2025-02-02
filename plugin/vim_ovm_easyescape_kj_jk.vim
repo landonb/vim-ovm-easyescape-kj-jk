@@ -67,7 +67,7 @@ endfunction
 "   endfunction
 
 " CXREF/2024-12-14:
-" ~/.vim/pack/embrace-vim/start/vim-async-map/autoload/embrace/async_map.vim
+" ~/.kit/nvim/embrace-vim/start/vim-async-map/autoload/embrace/async_map.vim
 
 function! s:CreateMaps_InsertMode_kj_jk()
   call g:embrace#async_map#RegisterInsertModeMap("kj", "\<ESC>")
